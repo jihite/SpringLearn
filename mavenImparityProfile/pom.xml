@@ -1,0 +1,62 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>mavenImparityProfile</groupId>
+  <artifactId>mavenImparityProfile</artifactId>
+  <packaging>war</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>mavenImparityProfile Maven Webapp</name>
+  <url>http://maven.apache.org</url>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <profiles>
+      <profile>
+          <id>test</id>
+          <properties>
+              <env>test</env><!--相当于定义一个变量 供下面使用-->
+              <myName>张三</myName><!--使用一个properties文件中未定义，但是其他地方会取值的变量-->
+          </properties>
+          <activation><!--默认激活-->
+              <activeByDefault>true</activeByDefault>
+          </activation>
+      </profile>
+      <profile>
+          <id>dev</id>
+          <properties>
+              <env>dev</env>
+              <myName>李四</myName>
+          </properties>
+          <activation><!--默认激活-->
+              <activeByDefault>false</activeByDefault>
+          </activation>
+      </profile>
+      <profile>
+          <id>product</id>
+          <properties>
+              <env>product</env>
+          </properties>
+      </profile>
+  </profiles>
+
+  <build>
+    <finalName>mavenImparityProfile</finalName>
+      <filters> <!--filters中定义了变量配置文件的地址，其中地址中的环境变量env就是上面profile中定义的值-->
+          <filter>src/main/resources/properties/${env}.properties</filter>
+      </filters>
+
+      <resources>
+        <resource> <!--resources中是定义哪些目录下的文件会被配置文件中定义的变量替换，一般我们会把项目的配置文件放在src/main/resources下-->
+            <directory>src/main/resources</directory>
+             <filtering>true</filtering> <!--是否使用过滤器-->
+         </resource>
+     </resources>
+  </build>
+
+</project>
